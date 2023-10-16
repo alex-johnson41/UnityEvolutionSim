@@ -169,7 +169,7 @@ public class SimController
             { InputTypes.Y_POSITION, y / (double)world.Height },
             { InputTypes.AGE, generationStep },
             { InputTypes.RANDOM, new System.Random().NextDouble() },
-            { InputTypes.CLOSEST_X_BORDER, Math.Round(x / (double)world.Width) },
+            // { InputTypes.CLOSEST_X_BORDER, Math.Round(x / (double)world.Width) },
             { InputTypes.CLOSEST_Y_BORDER, Math.Round(y / (double)world.Height) }
         };
         return dataDict;

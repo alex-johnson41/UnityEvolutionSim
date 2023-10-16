@@ -8,7 +8,7 @@ public enum InputTypes{
     RANDOM,
     X_POSITION,
     Y_POSITION,
-    CLOSEST_X_BORDER,
+    // CLOSEST_X_BORDER,
     CLOSEST_Y_BORDER
 }
 
