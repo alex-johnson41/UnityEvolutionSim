@@ -14,9 +14,13 @@ class SimControllerCreator : MonoBehaviour{
     [SerializeField]private int generations;
     private SimController sim;
     [SerializeField]private GameObject indivObject;
+    private bool runSimulation;
+    private int currentGeneration;
+    private int currentStep;
 
 
     public void Start(){
+        Application.targetFrameRate = 30;
         world = Instantiate(world);
         Grid grid = world.GetComponentInChildren<Grid>();
         this.sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
@@ -30,7 +34,38 @@ class SimControllerCreator : MonoBehaviour{
     }
 
     public void startSimulation(){
-        this.sim.runSimulation(generations);
+        runSimulation = true;
+    }
+
+    private void Update(){
+        simulationStep();
+    }
+
+    private void simulationStep(){
+        if (runSimulation){
+            if (currentGeneration == generations){return;}
+            if (currentStep == generationSteps){
+                GameObject[] instances = GameObject.FindGameObjectsWithTag("Individual");
+                foreach (GameObject target in instances){Destroy(target);}
+                this.sim.setupNextGeneration();
+                currentStep = 0;
+                currentGeneration ++;
+                Grid grid = world.GetComponentInChildren<Grid>();
+
+                foreach (Individual indiv in this.sim.individuals){
+                    indivObject = Instantiate(indivObject, new Vector3(0,0,0), Quaternion.identity, grid.GetComponent<Transform>());
+                    IndividualWrapper indivWrapper = indivObject.GetComponent<IndividualWrapper>();
+                    indivWrapper.grid = grid;
+                    indivWrapper.indiv = indiv;
+                    indivWrapper.name = "Test";
+                }
+            }
+            else{
+                this.sim.step(currentStep);
+                currentStep ++;
+            }
+        }
+
     }
 
 }

@@ -63,7 +63,7 @@ public class SimController
         }
     }
 
-    private void setupNextGeneration(){
+    public void setupNextGeneration(){
         int original = individuals.Count;
         individuals = findSurvivors();
         Debug.Log(individuals.Count);
