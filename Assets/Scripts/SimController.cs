@@ -7,14 +7,14 @@ public class SimController
 {
     [SerializeField] private Grid grid;
     [SerializeField]private int population;
-    [SerializeField]private int generationSteps;
+    [SerializeField]public int generationSteps;
     [SerializeField]private int genomeLength;
     [SerializeField]private int internalNeuronCount;
     [SerializeField]private int xSize;
     [SerializeField]private int ySize;
     [SerializeField]private SurvivalConditions survivalCondition;
     [SerializeField]private double mutationChance;
-    private List<Individual> individuals;
+    public List<Individual> individuals {get; private set;}
     private World world;
 
     public SimController(int population, int generationSteps, int genomeLength, int internalNeuronCount,
@@ -37,7 +37,7 @@ public class SimController
             int xCoord, yCoord;
             this.addIndividualToWorld(indiv, out xCoord, out yCoord);
             var dataDict = this.getInputData(indiv, 0, xCoord, yCoord);
-            indiv.spawn(dataDict, this.createRandomGenome());
+            indiv.spawn(dataDict, this.createRandomGenome(), xCoord, yCoord);
         }
     }
 
@@ -151,7 +151,7 @@ public class SimController
     private void updateInputData(Individual individual, int generationStep, int? newX, int? newY)
     {
         var dataDict = getInputData(individual, generationStep, newX, newY);
-        individual.updateData(dataDict);
+        individual.updateData(dataDict, newX, newY);
     }
 
     private Dictionary<InputTypes, double> getInputData(Individual individual, int generationStep, int? nullableX, int? nullableY)

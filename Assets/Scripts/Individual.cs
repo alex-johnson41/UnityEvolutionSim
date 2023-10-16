@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using Unity.Collections;
-using UnityEngine;
+
 
 public class Individual
 {
@@ -13,6 +11,8 @@ public class Individual
     private MoveDirections forward;
     private NeuralNetwork nnet;
     private string genome;
+    public int x {get; private set;}
+    public int y {get; private set;}
 
     public string Genome => genome;
     public MoveDirections Forward{ get => forward; set => forward = value;}
@@ -30,15 +30,21 @@ public class Individual
         }
         for (int i = 0; i < internalNeuronCount; i ++){
             internalNeuronsDict.Add(i, new InternalNeuron(i));
-        }
-                           
+        }                  
     }
-    public void spawn(Dictionary<InputTypes, double> inputData, string genomeHex){
+
+    public void spawn(Dictionary<InputTypes, double> inputData, string genomeHex, int x, int y){
+        this.x = x;
+        this.y = y;
         setInputData(inputData);
         createNnet(genomeHex);
     }
 
-    public void updateData(Dictionary<InputTypes, double> inputData){
+    public void updateData(Dictionary<InputTypes, double> inputData, int? newX, int? newY){
+        if (newX != null && newY != null){
+            this.x = newX.Value; 
+            this.y = newY.Value;
+        }
         setInputData(inputData);
     }
 
