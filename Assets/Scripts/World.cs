@@ -1,23 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 
 
-public class World : MonoBehaviour
+public class World
 {
-    private int width;
-    private int height;
+    [SerializeField] private int width;
+    [SerializeField] private int height;
+    [SerializeField] private Grid grid;
     private Individual[,] indivMap;
     private Dictionary<(int, int), bool> openCells;
 
     public int Width {get;}
     public int Height {get;}
 
-    public World(int width, int height){
+    public World(int width, int height, Grid grid){
         this.width = width;
         this.height = height;
+        this.grid = grid;
+        Width = width;
+        Height = height;
         indivMap = new Individual[width, height];
         openCells = initializeOpenCells();
     }
@@ -36,7 +39,7 @@ public class World : MonoBehaviour
         findIndividual(indiv, out int x, out int y);
         int endX = x + xOffset;
         int endY = y + yOffset;
-        if (openCells.ContainsKey((endX, endY)) & openCells[(endX, endY)]){
+        if (openCells.TryGetValue((endX, endY), out bool isOpen) && isOpen && openCells[(endX, endY)]){
             removeIndividual((endX, endY));
             addIndividual(indiv, endX, endY);
             newX = endX;
@@ -53,6 +56,7 @@ public class World : MonoBehaviour
                 indivMap[i,j] = null;
             }
         }
+        openCells = initializeOpenCells();
     }
 
     public bool cellOpen(int x, int y){
@@ -68,9 +72,10 @@ public class World : MonoBehaviour
     }
 
     public void findIndividual(Individual indiv, out int x, out int y){
-        (double oldX, double oldY) = indiv.getLocation();
-        x = (int) oldX * width;
-        y = (int) oldY * height;
+        (double relativeX, double relativeY) = indiv.getLocation();
+        x = (int) (relativeX * width);
+        y = (int) (relativeY * height);
+        return;
     }
     
     private Dictionary<(int, int), bool> initializeOpenCells(){

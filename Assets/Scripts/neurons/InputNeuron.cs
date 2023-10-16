@@ -1,4 +1,3 @@
-using UnityEngine;
 
 
 public class InputNeuron : Neuron{
@@ -10,11 +9,11 @@ public class InputNeuron : Neuron{
         this.type = type;
     }
 
-    public new void setData(double data){
+    public override void setData(double data){
         this.data = data;
     }
 
-    public new double getData(){
+    public override double getData(){
         return data;
     }
 }

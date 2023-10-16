@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Unity.Collections;
 using UnityEngine;
 
-public class Individual : MonoBehaviour
+public class Individual
 {
     private Dictionary<int, InputNeuron> inputNeuronsDict;
     private Dictionary<int, OutputNeuron> outputNeuronsDict;
@@ -79,27 +80,25 @@ public class Individual : MonoBehaviour
     }
 
     private NeuralNetwork decodeGenomeHex(string genomeHex){
-        Synapse[] synapses = new Synapse[genomeHex.Length / 4];
-        string binaryString = (from character in genomeHex select hexCharacterToBinary[character]).ToString();
-        string[] binaryGenome = (string[]) binaryString.Select((c, index) => new {c, index})
-            .GroupBy(x => x.index/8)
-            .Select(group => group.Select(elem => elem.c))
-            .Select(chars => new string(chars.ToArray()));
+        List<Synapse> synapses = new List<Synapse>();
+        List<string> binaryGenome = Enumerable.Range(0, genomeHex.Length / 8)
+            .Select(i => genomeHex.Substring(i * 8, 8))
+            .Select(chunk => string.Join(string.Empty, chunk.Select(c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')))).ToList();
         foreach(string binaryGene in binaryGenome){
             Neuron input;
             Neuron output; 
-            int inputType = int.Parse(binaryGene[..1]);
+            int inputType = int.Parse(binaryGene.Substring(0,1));
             int inputId = int.Parse(binaryGene.Substring(1, 7));
             int outputType = int.Parse(binaryGene.Substring(8,1));
             int outputId = int.Parse(binaryGene.Substring(9,7));
-            int weightSign = int.Parse(binaryGene.Substring(16,1));
-            int unsignedWeight = int.Parse(binaryGene.Substring(17)) / 10000;
-            int weight = unsignedWeight * weightSign;
+            int weightSign = int.Parse(binaryGene.Substring(16,1)) == 0 ? -1 : 1;
+            double unsignedWeight = (double) Convert.ToInt32(binaryGene.Substring(17), 2) / 10000;
+            double weight = unsignedWeight * weightSign;
             if (inputType == 0){input = inputNeuronsDict[inputId % inputNeuronsDict.Count];}
             else{input = internalNeuronsDict[inputId % internalNeuronsDict.Count];}
             if (outputType == 0){output = outputNeuronsDict[outputId % outputNeuronsDict.Count];}
             else{output = internalNeuronsDict[outputId % internalNeuronsDict.Count];}
-            synapses.Append(new Synapse(input, output, weight));
+            synapses.Add(new Synapse(input, output, weight));
         }
         return new NeuralNetwork(synapses);
     }

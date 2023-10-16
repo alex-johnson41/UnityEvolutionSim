@@ -11,7 +11,7 @@ public class OutputNeuron : Neuron {
         this.type = type;
     }
 
-    public new void addData(double data){
+    public override void addData(double data){
         this.data += data;
     }
 

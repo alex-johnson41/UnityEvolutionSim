@@ -3,28 +3,34 @@ using System.Linq;
 
 class NeuralNetwork
 {
-    private Synapse[] synapses;
+    private List<Synapse> synapses;
     private OutputNeuron[] outputNeurons;
 
-    public NeuralNetwork(Synapse[] synapses){
+    public NeuralNetwork(List<Synapse> synapses){
         this.synapses = sortSynapses(synapses);
         outputNeurons = getOutputNeurons(synapses);
     }
 
     public Dictionary<OutputTypes, double> getActions(){
-        return outputNeurons.ToDictionary(outputNeuron => outputNeuron.type, outputNeuron => outputNeuron.performAction());
+        Dictionary<OutputTypes, double> actionsDict = new Dictionary<OutputTypes, double>();
+        foreach (var outputNeuron in outputNeurons){
+            if (!actionsDict.ContainsKey(outputNeuron.type)){
+                actionsDict[outputNeuron.type] = outputNeuron.performAction();
+            }
+        }
+        return actionsDict;
     }
 
-    public Synapse[] getSynapses(){ return synapses; }
+    public List<Synapse> getSynapses(){ return synapses; }
     
-    private Synapse[] sortSynapses(Synapse[] synapses){
-        return synapses.OrderBy(synapse => synapse.getRank()).ToArray();
+    private List<Synapse> sortSynapses(List<Synapse> synapses){
+        return synapses.OrderBy(synapse => synapse.getRank()).ToList();
     }
     
-    private OutputNeuron[] getOutputNeurons(Synapse[] synapses){
-        return (OutputNeuron[])(
+    private OutputNeuron[] getOutputNeurons(List<Synapse> synapses){
+        return (
             from synapse in synapses 
             where synapse.output.GetType() == typeof(OutputNeuron) 
-            select synapse.output).ToHashSet().ToArray();
+            select (OutputNeuron) synapse.output).ToArray();
     }
 }

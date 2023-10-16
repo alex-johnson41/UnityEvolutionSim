@@ -44,7 +44,7 @@ public static class MoveDirectionsHelper{
         {(1, 0), MoveDirections.E},
         {(-1, 0), MoveDirections.W},
         {(0, 1), MoveDirections.N},
-        {(0, -1), MoveDirections.S}
+        {(0, -1), MoveDirections.S},
     };
 
     public static MoveDirections getMoveDirection(int x, int y){

@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SimController : MonoBehaviour
+public class SimController
 {
-    private World world;
-    private int population;
-    private int generationSteps;
-    private int genomeLength;
-    private int internalNeuronCount;
-    private int xSize;
-    private int ySize;
-    private SurvivalConditions survivalCondition;
-    private double mutationChance;
-
+    [SerializeField] private Grid grid;
+    [SerializeField]private int population;
+    [SerializeField]private int generationSteps;
+    [SerializeField]private int genomeLength;
+    [SerializeField]private int internalNeuronCount;
+    [SerializeField]private int xSize;
+    [SerializeField]private int ySize;
+    [SerializeField]private SurvivalConditions survivalCondition;
+    [SerializeField]private double mutationChance;
     private List<Individual> individuals;
+    private World world;
 
     public SimController(int population, int generationSteps, int genomeLength, int internalNeuronCount,
-                         int xSize, int ySize, SurvivalConditions survivalCondition, double mutationChance){
-        this.world = new World(xSize, ySize);
+                         int xSize, int ySize, SurvivalConditions survivalCondition, double mutationChance, Grid grid){
+        this.world = new World(xSize, ySize, grid);
         this.population = population;
         this.generationSteps = generationSteps;
         this.genomeLength = genomeLength;
@@ -27,6 +27,7 @@ public class SimController : MonoBehaviour
         this.survivalCondition = survivalCondition;
         this.mutationChance = mutationChance;
         this.individuals = createIndividuals(population);
+        this.grid = grid;
     }
 
     public void setupSimulation(){
@@ -34,9 +35,9 @@ public class SimController : MonoBehaviour
         {
             Individual indiv = individuals[i];
             int xCoord, yCoord;
-            addIndividualToWorld(indiv, out xCoord, out yCoord);
-            var dataDict = getInputData(indiv, 0, xCoord, yCoord);
-            indiv.spawn(dataDict, createRandomGenome());
+            this.addIndividualToWorld(indiv, out xCoord, out yCoord);
+            var dataDict = this.getInputData(indiv, 0, xCoord, yCoord);
+            indiv.spawn(dataDict, this.createRandomGenome());
         }
     }
 
@@ -65,6 +66,7 @@ public class SimController : MonoBehaviour
     private void setupNextGeneration(){
         int original = individuals.Count;
         individuals = findSurvivors();
+        Debug.Log(individuals.Count);
         Console.WriteLine((double)individuals.Count / original * 100);
         var newIndivs = newIndividuals();
         individuals.AddRange(newIndivs);
@@ -97,6 +99,12 @@ public class SimController : MonoBehaviour
         List<Individual> survivors = new List<Individual>();
         switch (survivalCondition){
             case SurvivalConditions.RIGHT_SIDE:
+                // foreach (Individual indiv in individuals){
+                //     int x;
+                //     int y;
+                //     world.findIndividual(indiv, out x, out y);
+                //     if (x >= world.Width / 2){survivors.Add(indiv);}
+                // }
                 survivors.AddRange(individuals.Where(indiv =>{
                     world.findIndividual(indiv, out int x, out int y);
                     return x >= world.Width / 2;
@@ -122,7 +130,7 @@ public class SimController : MonoBehaviour
             y_offset += indivDirection.Item2 * level;
         }
         if (actionsDict.ContainsKey(OutputTypes.MOVE_RANDOM)){
-            (int, int) indivDirection = MoveDirectionsHelper.getCoordinates((MoveDirections)new System.Random().Next(Enum.GetValues(typeof(MoveDirections)).Length));
+            (int, int) indivDirection = (new System.Random().Next(3) - 1, new System.Random().Next(3) - 1);
             var level = actionsDict[OutputTypes.MOVE_RANDOM];
             x_offset += indivDirection.Item1 * level;
             y_offset += indivDirection.Item2 * level;
@@ -140,9 +148,9 @@ public class SimController : MonoBehaviour
         newY = null;
     }
 
-    private void updateInputData(Individual individual, int generationStep, int? nullableX, int? nullableY)
+    private void updateInputData(Individual individual, int generationStep, int? newX, int? newY)
     {
-        var dataDict = getInputData(individual, generationStep, nullableX, nullableY);
+        var dataDict = getInputData(individual, generationStep, newX, newY);
         individual.updateData(dataDict);
     }
 
@@ -156,7 +164,7 @@ public class SimController : MonoBehaviour
         else{
             world.findIndividual(individual, out x, out y);
         }
-        var dataDict = new Dictionary<InputTypes, double>{
+        Dictionary<InputTypes, double> dataDict = new Dictionary<InputTypes, double>{
             { InputTypes.X_POSITION, x / (double)world.Width },
             { InputTypes.Y_POSITION, y / (double)world.Height },
             { InputTypes.AGE, generationStep },
@@ -180,8 +188,6 @@ public class SimController : MonoBehaviour
         }
         return indivs;
     }
-
-    private string createRandomGenome(){
-        return string.Format("%0{0}x", new System.Random().Next(16, (int)Math.Pow(16, genomeLength) - 1));
-    }
+    
+    public string createRandomGenome() => string.Concat(Enumerable.Range(0, genomeLength).Select(_ => Guid.NewGuid().ToString("N").Substring(0, 8)));
 }

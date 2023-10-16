@@ -10,18 +10,18 @@ public class InternalNeuron : Neuron {
         selfInput = 0;
     }
     
-    public new void addData(double data){
+    public override void addData(double data){
         this.data += data;
     }
 
-    public new double getData(){
+    public override double getData(){
         double data = this.data + selfInput;
         selfInput = 0;
         this.data = 0;
         return Math.Tanh(data);
     }
 
-    public new void addSelfData(double data){
+    public override void addSelfData(double data){
         selfInput = data;
     }
 }
