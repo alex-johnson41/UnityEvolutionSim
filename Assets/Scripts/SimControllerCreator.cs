@@ -15,6 +15,7 @@ class SimControllerCreator : MonoBehaviour{
     private SimController sim;
     [SerializeField]private GameObject indivPrefab;
     private bool runSimulation;
+    private bool simulationLoaded;
     private int currentGeneration;
     private int currentStep;
 
@@ -22,6 +23,10 @@ class SimControllerCreator : MonoBehaviour{
     public void Start(){
         Application.targetFrameRate = 40;
         world = Instantiate(world);
+        loadSimulation();
+    }
+
+    public void loadSimulation(){
         Grid grid = world.GetComponentInChildren<Grid>();
         this.sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
         this.sim.setupSimulation();
@@ -31,18 +36,25 @@ class SimControllerCreator : MonoBehaviour{
             indivWrapper.grid = grid;
             indivWrapper.indiv = indiv;
         }
+        simulationLoaded = true;
     }
 
-    public void startSimulation(){
-        runSimulation = true;
+    public void playPauseSimulation(){
+        runSimulation = !runSimulation;
     }
+
+    public void oneStep(){
+        runSimulation = true;
+        simulationStep();
+        runSimulation = false;
+    } 
 
     private void Update(){
         simulationStep();
     }
 
     private void simulationStep(){
-        if (runSimulation){
+        if (runSimulation && simulationLoaded){
             if (currentGeneration == generations){return;}
             if (currentStep == generationSteps){
                 GameObject[] instances = GameObject.FindGameObjectsWithTag("Individual");
