@@ -46,12 +46,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indivPrefab: {fileID: 4214799436515592706, guid: 5eb8b88b6d7dc4fb086b7dbeb82817d8, type: 3}
   world: {fileID: 563182144796912976, guid: 67ddc04b3b6e649588d7d189fff1e500, type: 3}
-  populationInput: {fileID: 0}
-  generationStepsInput: {fileID: 0}
-  genomeLengthInput: {fileID: 0}
-  internalNeuronCountInput: {fileID: 0}
-  xSizeInput: {fileID: 0}
-  ySizeInput: {fileID: 0}
-  survivalConditionInput: {fileID: 0}
-  mutationChanceInput: {fileID: 0}
-  generationsInput: {fileID: 0}
