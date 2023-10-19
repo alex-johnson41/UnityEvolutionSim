@@ -51,7 +51,7 @@ public static class MoveDirectionsHelper{
         if (DirectionLookup.TryGetValue((x, y), out var moveDirection)){
             return moveDirection;
         }
-        throw new ArgumentException("Invalid coordinates (0, 0) do not map to any MoveDirection.");
+        throw new ArgumentException("Invalid coordinates do not map to any MoveDirection.");
     }
 
     public static (int x, int y) getCoordinates(MoveDirections moveDirection)
