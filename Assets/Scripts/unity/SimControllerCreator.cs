@@ -25,13 +25,12 @@ class SimControllerCreator : MonoBehaviour{
 
 
     public void Start(){
-        Application.targetFrameRate = 500;
         world = Instantiate(world);
-        loadSimulation();
     }
 
     public void saveInputs(Dictionary<string, string> inputDict){
         try{
+            Application.targetFrameRate = int.Parse(inputDict["FrameRateInput"]);
             population = int.Parse(inputDict["PopulationInput"]);
             generationSteps = int.Parse(inputDict["GenerationStepsInput"]);
             genomeLength = int.Parse(inputDict["GenomeLengthInput"]);
@@ -53,6 +52,7 @@ class SimControllerCreator : MonoBehaviour{
         clearSimulation();
         if (inputSaved){
             Grid grid = world.GetComponentInChildren<Grid>();
+            grid.cellSize = new Vector3((float) 8/xSize, (float) 8/ySize);
             this.sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
             this.sim.setupSimulation();
             foreach (Individual indiv in this.sim.individuals){
