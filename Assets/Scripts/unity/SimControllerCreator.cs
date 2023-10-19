@@ -7,15 +7,6 @@ class SimControllerCreator : MonoBehaviour{
 
     [SerializeField] private GameObject indivPrefab;
     [SerializeField] private GameObject world;
-    public TMP_InputField populationInput;
-    public InputData generationStepsInput;
-    public InputData genomeLengthInput;
-    public InputData internalNeuronCountInput;
-    public InputData xSizeInput;
-    public InputData ySizeInput;
-    public InputData survivalConditionInput;
-    public InputData mutationChanceInput;
-    public InputData generationsInput;
     private int population;
     private int generationSteps;
     private int genomeLength;
@@ -34,7 +25,7 @@ class SimControllerCreator : MonoBehaviour{
 
 
     public void Start(){
-        Application.targetFrameRate = 40;
+        Application.targetFrameRate = 500;
         world = Instantiate(world);
         loadSimulation();
     }
@@ -47,7 +38,7 @@ class SimControllerCreator : MonoBehaviour{
             internalNeuronCount = int.Parse(inputDict["InternalNeuronCountInput"]);
             xSize = int.Parse(inputDict["XSizeInput"]);
             ySize = int.Parse(inputDict["YSizeInput"]);
-            survivalCondition = (SurvivalConditions) Enum.Parse(typeof(SurvivalConditions), inputDict["SurvivalConditionInput"]);
+            survivalCondition = (SurvivalConditions) Enum.Parse(typeof(SurvivalConditions), inputDict["SurvivalConditionDropdown"]);
             generations = int.Parse(inputDict["GenerationsInput"]);
             mutationChance = double.Parse(inputDict["MutationChanceInput"]);
             inputSaved = true;
@@ -55,9 +46,11 @@ class SimControllerCreator : MonoBehaviour{
         catch{
             throw new ArgumentException("Inputs must be the correct type");
         }
+        loadSimulation();
     }
 
     public void loadSimulation(){
+        clearSimulation();
         if (inputSaved){
             Grid grid = world.GetComponentInChildren<Grid>();
             this.sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
@@ -87,12 +80,22 @@ class SimControllerCreator : MonoBehaviour{
         else{simulationStep();}
     }
 
+    private void clearSimulation(){
+        GameObject[] instances = GameObject.FindGameObjectsWithTag("Individual");
+        foreach (GameObject target in instances){Destroy(target);}
+    }
+
     private void simulationStep(){
         if (runSimulation && simulationLoaded){
-            if (currentGeneration == generations){return;}
+            if (currentGeneration == generations){
+                clearSimulation();
+                currentStep = 0;
+                currentGeneration = 0;
+                simulationLoaded = false;
+                runSimulation = false;
+            }
             if (currentStep == generationSteps){
-                GameObject[] instances = GameObject.FindGameObjectsWithTag("Individual");
-                foreach (GameObject target in instances){Destroy(target);}
+                clearSimulation();
                 this.sim.setupNextGeneration();
                 currentStep = 0;
                 currentGeneration ++;
