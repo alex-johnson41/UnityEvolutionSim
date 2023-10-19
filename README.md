@@ -5,7 +5,7 @@ Inspired by [this](https://www.youtube.com/watch?v=N3tRFayqVtk) video
 Initially implemented in python in [this](https://github.com/alex-johnson41/evolutionSim) repo
 
 ## Code Architecture:
-### Project designed using vanilla c# classes with a unity monobehavior class wrapped around each of the classes that need to be present in the unity game and not just internally
+### Project designed using vanilla c# classes with a unity monobehavior class wrapper on each of the classes that need to be present in the unity game and not just internally
 ### Vanilla C# classes:
 - Sim Controller
   - API for setting up and controlling the simulation as it runs
@@ -35,6 +35,8 @@ Initially implemented in python in [this](https://github.com/alex-johnson41/evol
       - 0 if y position < 0.5, 1 if y position > 0.5
     - Random input
       - Random double from 0 to 1
+    - Age
+      - Calculated as step number / total steps in generation
 - Output Neuron
   - Recieves a list of weighted data values from input/internal neurons
   - Returns the probability that the individual will take the specified action, or inverse of the action (-1 to 1)
