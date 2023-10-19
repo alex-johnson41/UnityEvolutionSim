@@ -3,7 +3,7 @@ using System.Linq;
 
 class NeuralNetwork
 {
-    private List<Synapse> synapses;
+    public List<Synapse> synapses {get; private set;}
     private OutputNeuron[] outputNeurons;
 
     public NeuralNetwork(List<Synapse> synapses){
@@ -20,8 +20,6 @@ class NeuralNetwork
         }
         return actionsDict;
     }
-
-    public List<Synapse> getSynapses(){ return synapses; }
     
     private List<Synapse> sortSynapses(List<Synapse> synapses){
         return synapses.OrderBy(synapse => synapse.getRank()).ToList();

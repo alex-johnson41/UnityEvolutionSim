@@ -49,7 +49,7 @@ public class Individual
     }
 
     public Dictionary<OutputTypes, double> step(){
-        foreach (Synapse synapse in nnet.getSynapses()){
+        foreach (Synapse synapse in nnet.synapses){
             synapse.sendData();
         }
         return nnet.getActions();
