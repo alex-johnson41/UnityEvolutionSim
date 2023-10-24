@@ -14,7 +14,7 @@ class IndividualWrapper : MonoBehaviour{
         gridY = indiv.y;
         Transform transfrom = GetComponent<Transform>();
         transform.position = grid.gridToWorldPosition(gridX, gridY);
-        transfrom.localScale = Vector3.Scale(grid.cellSize, grid.cellSize) * .75f ;
+        transform.localScale = new Vector3(1.0f / grid.xSize, 1.0f/grid.ySize);
         changeColor();
     }
 
