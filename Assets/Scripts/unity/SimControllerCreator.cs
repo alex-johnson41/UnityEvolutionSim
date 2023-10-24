@@ -53,9 +53,9 @@ class SimControllerCreator : MonoBehaviour{
         if (inputSaved){
             Grid grid = world.GetComponentInChildren<Grid>();
             grid.cellSize = new Vector3((float) 8/xSize, (float) 8/ySize);
-            this.sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
-            this.sim.setupSimulation();
-            foreach (Individual indiv in this.sim.individuals){
+            sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
+            sim.setupSimulation();
+            foreach (Individual indiv in sim.individuals){
                 GameObject indivObject = Instantiate(indivPrefab, new Vector3(0,0,0), Quaternion.identity, grid.GetComponent<Transform>());
                 IndividualWrapper indivWrapper = indivObject.GetComponent<IndividualWrapper>();
                 indivWrapper.grid = grid;
@@ -96,12 +96,12 @@ class SimControllerCreator : MonoBehaviour{
             }
             if (currentStep == generationSteps){
                 clearSimulation();
-                this.sim.setupNextGeneration();
+                sim.setupNextGeneration();
                 currentStep = 0;
                 currentGeneration ++;
                 Grid grid = world.GetComponentInChildren<Grid>();
 
-                foreach (Individual indiv in this.sim.individuals){
+                foreach (Individual indiv in sim.individuals){
                     GameObject indivObject = Instantiate(indivPrefab, new Vector3(0,0,0), Quaternion.identity, grid.GetComponent<Transform>());
                     IndividualWrapper indivWrapper = indivObject.GetComponent<IndividualWrapper>();
                     indivWrapper.grid = grid;
@@ -110,7 +110,7 @@ class SimControllerCreator : MonoBehaviour{
                 }
             }
             else{
-                this.sim.step(currentStep);
+                sim.step(currentStep);
                 currentStep ++;
             }
         }
