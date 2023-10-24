@@ -7,6 +7,7 @@ class SimControllerCreator : MonoBehaviour{
 
     [SerializeField] private GameObject indivPrefab;
     [SerializeField] private GameObject world;
+    private CustomGrid grid;
     private int population;
     private int generationSteps;
     private int genomeLength;
@@ -51,9 +52,8 @@ class SimControllerCreator : MonoBehaviour{
     public void loadSimulation(){
         clearSimulation();
         if (inputSaved){
-            Grid grid = world.GetComponentInChildren<Grid>();
-            grid.cellSize = new Vector3((float) 8/xSize, (float) 8/ySize);
-            sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance, grid);
+            grid = initializeGrid();
+            sim = new SimController(population, generationSteps, genomeLength, internalNeuronCount, xSize, ySize, survivalCondition, mutationChance);
             sim.setupSimulation();
             foreach (Individual indiv in sim.individuals){
                 GameObject indivObject = Instantiate(indivPrefab, new Vector3(0,0,0), Quaternion.identity, grid.GetComponent<Transform>());
@@ -63,6 +63,13 @@ class SimControllerCreator : MonoBehaviour{
             }
             simulationLoaded = true;
         }
+    }
+
+    private CustomGrid initializeGrid(){
+        Transform worldTransform = world.GetComponent<Transform>();
+        CustomGrid grid = worldTransform.Find("Grid").GetComponent<CustomGrid>();
+        grid.initializeGrid(xSize, ySize);
+        return grid;
     }
 
     public void playPauseSimulation(){
@@ -99,7 +106,6 @@ class SimControllerCreator : MonoBehaviour{
                 sim.setupNextGeneration();
                 currentStep = 0;
                 currentGeneration ++;
-                Grid grid = world.GetComponentInChildren<Grid>();
 
                 foreach (Individual indiv in sim.individuals){
                     GameObject indivObject = Instantiate(indivPrefab, new Vector3(0,0,0), Quaternion.identity, grid.GetComponent<Transform>());

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class SimController
 {
-    [SerializeField] private Grid grid;
     [SerializeField]private int population;
     [SerializeField]public int generationSteps;
     [SerializeField]private int genomeLength;
@@ -18,8 +17,8 @@ public class SimController
     private World world;
 
     public SimController(int population, int generationSteps, int genomeLength, int internalNeuronCount,
-                         int xSize, int ySize, SurvivalConditions survivalCondition, double mutationChance, Grid grid){
-        this.world = new World(xSize, ySize, grid);
+                         int xSize, int ySize, SurvivalConditions survivalCondition, double mutationChance){
+        this.world = new World(xSize, ySize);
         this.population = population;
         this.generationSteps = generationSteps;
         this.genomeLength = genomeLength;
@@ -27,7 +26,6 @@ public class SimController
         this.survivalCondition = survivalCondition;
         this.mutationChance = mutationChance;
         this.individuals = createIndividuals(population);
-        this.grid = grid;
     }
 
     public void setupSimulation(){

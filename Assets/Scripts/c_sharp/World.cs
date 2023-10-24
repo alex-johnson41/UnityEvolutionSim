@@ -8,17 +8,15 @@ public class World
 {
     [SerializeField] private int width;
     [SerializeField] private int height;
-    [SerializeField] private Grid grid;
     private Individual[,] indivMap;
     private Dictionary<(int, int), bool> openCells;
 
     public int Width {get;}
     public int Height {get;}
 
-    public World(int width, int height, Grid grid){
+    public World(int width, int height){
         this.width = width;
         this.height = height;
-        this.grid = grid;
         Width = width;
         Height = height;
         indivMap = new Individual[width, height];

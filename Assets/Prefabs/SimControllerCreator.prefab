@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indivPrefab: {fileID: 4214799436515592706, guid: 5eb8b88b6d7dc4fb086b7dbeb82817d8, type: 3}
   world: {fileID: 563182144796912976, guid: 67ddc04b3b6e649588d7d189fff1e500, type: 3}
+  grid: {fileID: 0}

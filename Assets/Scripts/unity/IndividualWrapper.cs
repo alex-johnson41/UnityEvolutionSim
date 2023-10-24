@@ -4,7 +4,7 @@ using UnityEngine;
 
 class IndividualWrapper : MonoBehaviour{
 
-    public Grid grid;
+    public CustomGrid grid;
     public Individual indiv;
     public int gridX;
     public int gridY;
@@ -13,15 +13,15 @@ class IndividualWrapper : MonoBehaviour{
         gridX = indiv.x;
         gridY = indiv.y;
         Transform transfrom = GetComponent<Transform>();
-        transform.position = grid.CellToLocal(new Vector3Int(gridX, gridY, 0));
-        transfrom.localScale = Vector3.Scale(grid.cellSize, grid.cellSize);
+        transform.position = grid.gridToWorldPosition(gridX, gridY);
+        transfrom.localScale = Vector3.Scale(grid.cellSize, grid.cellSize) * .75f ;
         changeColor();
     }
 
     public void Update(){
         gridX = indiv.x;
         gridY = indiv.y;
-        transform.position = grid.CellToLocal(new Vector3Int(gridX, gridY, 0));
+        transform.position = grid.gridToWorldPosition(gridX, gridY);
     }
 
     private void changeColor(){

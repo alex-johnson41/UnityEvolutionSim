@@ -93,12 +93,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563182144796912976}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a88f05d434e74a46b4daa60a4f3f8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 1624778913715435879}
+  grid: {fileID: 0}
 --- !u!1 &1609586997569990099
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +108,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 713914530715504583}
-  - component: {fileID: 1624778913715435879}
+  - component: {fileID: 754187315360296886}
+  - component: {fileID: 4932390673789442968}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -131,15 +132,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2810825471496011108}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!156049354 &1624778913715435879
-Grid:
+--- !u!114 &754187315360296886
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609586997569990099}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 1}
-  m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
-  m_CellSwizzle: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61e0dadef3ad4fb896f74bc9f7f7611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4932390673789442968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609586997569990099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f067665c2544649cda29fb3c1d937f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
