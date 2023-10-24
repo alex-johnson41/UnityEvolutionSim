@@ -11,6 +11,7 @@ public class Individual
     private MoveDirections forward;
     private NeuralNetwork nnet;
     private string genome;
+    public string color {get; private set;}
     public int x {get; private set;}
     public int y {get; private set;}
 
@@ -76,6 +77,7 @@ public class Individual
 
     public void createNnet(string genomeHex){
         genome = genomeHex;
+        color = createHexColor(genomeHex);
         nnet = decodeGenomeHex(genomeHex);
     }
 
@@ -113,5 +115,14 @@ public class Individual
         Array values = Enum.GetValues(typeof(MoveDirections));
         Random random = new Random();
         return (MoveDirections)values.GetValue(random.Next(values.Length));
+    }
+
+    private string createHexColor(string genomeHex){
+        int nStep = genomeHex.Length / 6;
+        string color = "";
+        for (int i = 0; i < nStep*6; i += nStep){
+            color += genomeHex[i];
+        }
+        return color;
     }
 }
