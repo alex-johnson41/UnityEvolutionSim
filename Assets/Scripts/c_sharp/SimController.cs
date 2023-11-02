@@ -65,7 +65,6 @@ public class SimController
         int original = individuals.Count;
         individuals = findSurvivors();
         Debug.Log(individuals.Count);
-        Console.WriteLine((double)individuals.Count / original * 100);
         var newIndivs = newIndividuals();
         individuals.AddRange(newIndivs);
         world.clearMap();
@@ -97,12 +96,6 @@ public class SimController
         List<Individual> survivors = new List<Individual>();
         switch (survivalCondition){
             case SurvivalConditions.RIGHT_SIDE:
-                // foreach (Individual indiv in individuals){
-                //     int x;
-                //     int y;
-                //     world.findIndividual(indiv, out x, out y);
-                //     if (x >= world.Width / 2){survivors.Add(indiv);}
-                // }
                 survivors.AddRange(individuals.Where(indiv =>{
                     world.findIndividual(indiv, out int x, out int y);
                     return x >= world.Width / 2;
