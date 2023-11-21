@@ -18,14 +18,14 @@ public class SimController
 
     public SimController(int population, int generationSteps, int genomeLength, int internalNeuronCount,
                          int xSize, int ySize, SurvivalConditions survivalCondition, double mutationChance){
-        this.world = new World(xSize, ySize);
+        world = new World(xSize, ySize);
         this.population = population;
         this.generationSteps = generationSteps;
         this.genomeLength = genomeLength;
         this.internalNeuronCount = internalNeuronCount;
         this.survivalCondition = survivalCondition;
         this.mutationChance = mutationChance;
-        this.individuals = createIndividuals(population);
+        individuals = createIndividuals(population);
     }
 
     public void setupSimulation(){
