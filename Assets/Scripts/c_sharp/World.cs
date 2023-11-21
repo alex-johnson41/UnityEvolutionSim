@@ -10,7 +10,7 @@ public class World
     [SerializeField] private int height;
     private Individual[,] indivMap;
     private Dictionary<(int, int), bool> openCells;
-
+    private System.Random rnd = new System.Random();
     public int Width {get;}
     public int Height {get;}
 
@@ -64,10 +64,9 @@ public class World
     public void randomOpenCell(out int x, out int y){
         (int, int)[] cells = openCells.Where(item => item.Value == true)
                                       .Select(item => item.Key).ToArray(); 
-        System.Random rnd = new();
         int index = rnd.Next(cells.Length);
         (x, y) = cells[index];
-    }
+            }
 
     public void findIndividual(Individual indiv, out int x, out int y){
         (double relativeX, double relativeY) = indiv.getLocation();
