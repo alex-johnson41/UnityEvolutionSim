@@ -13,7 +13,7 @@ class IndividualWrapper : MonoBehaviour{
         gridX = indiv.x;
         gridY = indiv.y;
         Transform transfrom = GetComponent<Transform>();
-        transform.position = grid.gridToWorldPosition(gridX, gridY);
+        transform.position = grid.gridToWorldPosition(new Vector3(gridX, gridY, 0));
         transform.localScale = new Vector3(1.0f / grid.xSize, 1.0f/grid.ySize);
         changeColor();
     }
@@ -21,7 +21,7 @@ class IndividualWrapper : MonoBehaviour{
     public void Update(){
         gridX = indiv.x;
         gridY = indiv.y;
-        transform.position = grid.gridToWorldPosition(gridX, gridY);
+        transform.position = grid.gridToWorldPosition(new Vector3(gridX, gridY, 0));
     }
 
     private void changeColor(){
