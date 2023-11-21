@@ -17,8 +17,8 @@ public class CustomGrid : MonoBehaviour
         cellSize = new Vector3((float) xScale/xSize, (float) yScale/ySize);
     }
 
-    public Vector3 gridToWorldPosition(int x, int y){
-        return originPosition + Vector3.Scale(new Vector3(x, y), cellSize);
+    public Vector3 gridToWorldPosition(Vector3 position){
+        return originPosition + Vector3.Scale(position, cellSize);
     }
 
     public void initializeGrid(int xSize, int ySize){
